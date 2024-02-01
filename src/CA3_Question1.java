@@ -1,5 +1,5 @@
-import java.util.Stack;
 import java.util.Scanner;
+import java.util.Stack;
 
 /**
  *  Name: Kaylon Riordan
@@ -18,7 +18,7 @@ public class CA3_Question1
         int car = 1;
         boolean fin = false;
 
-        System.out.println("Please enter positive numbers e.g. 1 to add car 1, or negative numbers e.g. -1 to remove car 1. Enter 0 to end the program.");
+        System.out.println("\nPlease enter positive numbers e.g. 1 to add car 1, or negative numbers e.g. -1 to remove car 1. Enter 0 to end the program.");
 
         while(car != 0)
         {
@@ -27,36 +27,53 @@ public class CA3_Question1
 
             if(car > 0)
             {
-                driveway.push(car);
-                display(driveway, street);
+                if(driveway.search(car) == -1)
+                {
+                    driveway.push(car);
+                    display(driveway, street);
+                }
+                else
+                {
+                    System.out.println("\nSorry, car " + car + " is already in the driveway.");
+                }
             }
             else if(car < 0)
             {
                 fin = false;
                 while(!fin)
                 {
-                    if(driveway.peek() == car * -1)
+                    if(driveway.search(car * -1) == -1)
                     {
-                        driveway.pop();
-                        display(driveway, street);
-
-                        while(!street.isEmpty())
-                        {
-                            driveway.push(street.peek());
-                            street.pop();
-                            display(driveway, street);
-                        }
+                        System.out.println("\nSorry, no car " + car * -1 + " was found in the driveway.");
                         fin = true;
                     }
                     else
                     {
-                        street.push(driveway.peek());
-                        driveway.pop();
-                        display(driveway, street);
+                        if(driveway.peek() == car * -1)
+                        {
+                            driveway.pop();
+                            display(driveway, street);
+
+                            while(!street.isEmpty())
+                            {
+                                driveway.push(street.peek());
+                                street.pop();
+                                display(driveway, street);
+                            }
+                            fin = true;
+                        }
+                        else
+                        {
+                            street.push(driveway.peek());
+                            driveway.pop();
+                            display(driveway, street);
+                        }
                     }
                 }
             }
         }
+        System.out.println("\n0 Entered, Program ended.\nFinal car layout:");
+        display(driveway, street);
     }
 
     public static void display(Stack<Integer> driveway, Stack<Integer> street) {
