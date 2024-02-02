@@ -44,8 +44,7 @@ public class CA3_Question2
 
         while(!coordinates.isEmpty())
         {
-            Pair point = coordinates.peek();
-            coordinates.pop();
+            Pair point = coordinates.pop();
 
             if(arr[point.getRow()][point.getColumn()] == 0)
             {

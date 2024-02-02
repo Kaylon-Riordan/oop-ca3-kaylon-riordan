@@ -56,24 +56,20 @@ public class CA3_Question1
 
                             while(!street.isEmpty())
                             {
-                                driveway.push(street.peek());
-                                street.pop();
+                                driveway.push(street.pop());
                                 display(driveway, street);
                             }
                             fin = true;
                         }
                         else
                         {
-                            street.push(driveway.peek());
-                            driveway.pop();
+                            street.push(driveway.pop());
                             display(driveway, street);
                         }
                     }
                 }
             }
         }
-        System.out.println("\n0 Entered, Program ended.\nFinal car layout:");
-        display(driveway, street);
     }
 
     public static void display(Stack<Integer> driveway, Stack<Integer> street) {
