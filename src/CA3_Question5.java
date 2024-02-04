@@ -15,23 +15,26 @@ public class CA3_Question5
         Queue<String> landing = new LinkedList<>();
 
         String command = "";
+        String flightSymbol;
 
         System.out.println("Please use commands 'takeoff flightSymbol' to queue a take off, 'land flightSymbol' to queue a landing, 'next' to perform the next queued action, and 'quit' to end simulation");
 
         while(!command.equalsIgnoreCase("quit"))
         {
             System.out.print("\nCommand: ");
-            command = keyboard.nextLine().trim();
+            command = keyboard.next();
 
-            if(command.contains(" ") && command.substring(0, command.indexOf(' ')).equalsIgnoreCase("takeoff"))
+            if(command.equalsIgnoreCase("takeoff"))
             {
-                takingOff.add(command.substring(command.indexOf(' ')+1));
-                System.out.println("\n" + command.substring(command.indexOf(' ')+1) + " is queued to takeoff");
+                flightSymbol = keyboard.next();
+                takingOff.add(flightSymbol);
+                System.out.println("\n" + flightSymbol + " is queued to takeoff");
             }
-            else if(command.contains(" ") && command.substring(0, command.indexOf(' ')).equalsIgnoreCase("land"))
+            else if(command.equalsIgnoreCase("land"))
             {
-                landing.add(command.substring(command.indexOf(' ')+1));
-                System.out.println("\n" + command.substring(command.indexOf(' ')+1) + " is queued to land");
+                flightSymbol = keyboard.next();
+                landing.add(flightSymbol);
+                System.out.println("\n" + flightSymbol + " is queued to land");
             }
             else if(command.equalsIgnoreCase("next"))
             {
