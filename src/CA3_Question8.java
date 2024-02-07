@@ -22,18 +22,31 @@ public class CA3_Question8 {
 
         int a;
         int b;
+        String num = "";
 
-        for(int i = 0; i > equation.length(); i++)
+        for(int i = 0; i < equation.length(); i++)
         {
             char next = equation.charAt(i);
+
             if(isDigit(next))
             {
-                numbers.push(((int) next));
+                num = num + next;
+                if(i == equation.length()-1 && next != ')')
+                {
+                    numbers.push(Integer.parseInt(num));
+                }
             }
             else
             {
                 operators.push(next);
+                if(num != "")
+                {
+                    numbers.push(Integer.parseInt(num));
+                    num = "";
+                }
             }
+
+            System.out.println("\n"+numbers+"\n"+operators);
 
             if(numbers.size() > 1)
             {
@@ -58,7 +71,8 @@ public class CA3_Question8 {
                 }
                 operators.pop();
             }
+            System.out.println("\n"+numbers+"\n"+operators);
         }
-        System.out.println("\n");
+        System.out.println("\nAnswer = " + numbers.peek());
     }
 }
