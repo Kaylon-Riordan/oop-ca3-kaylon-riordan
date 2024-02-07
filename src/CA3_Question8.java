@@ -20,10 +20,19 @@ public class CA3_Question8 {
         Stack<Integer> numbers = new Stack<>();
         Stack<Character> operators = new Stack<>();
 
-        int a;
-        int b;
+        int a, b;
+        int priority = 0;
         String num = "";
 
+
+        for(int i = 0; i < equation.length(); i++)
+        {
+            char next = equation.charAt(i);
+            if(next == '*' || next == 'x' || next == 'X' || next == '÷' || next == '/')
+            {
+                priority++;
+            }
+        }
         for(int i = 0; i < equation.length(); i++)
         {
             char next = equation.charAt(i);
@@ -53,21 +62,23 @@ public class CA3_Question8 {
                 b = numbers.pop();
                 a = numbers.pop();
 
-                if(operators.peek() == '+')
+                if(operators.peek() == '+' && priority == 0)
                 {
                     numbers.push(a + b);
                 }
-                else if(operators.peek() == '-')
+                else if(operators.peek() == '-' && priority == 0)
                 {
                     numbers.push(a - b);
                 }
                 else if(operators.peek() == '*' || operators.peek() == 'x' || operators.peek() == 'X')
                 {
                     numbers.push(a * b);
+                    priority--;
                 }
                 else if(operators.peek() == '÷' || operators.peek() == '/')
                 {
                     numbers.push(a / b);
+                    priority--;
                 }
                 operators.pop();
             }
