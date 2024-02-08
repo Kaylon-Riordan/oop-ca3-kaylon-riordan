@@ -90,17 +90,13 @@ public class CA3_Question8 {
 
     public static int precedence(char op)
     {
-        if(op == '*' || op == '/')
-        {
-            return 2;
-        }
-        else if(op == '+' || op == '-')
+        if(op == '+' || op == '-')
         {
             return 1;
         }
         else
         {
-            return 0;
+            return 2;
         }
     }
 }

@@ -35,7 +35,10 @@ public class CA3_Question3
                 {
                     identifiers.put(ident, new ArrayList<>());
                 }
-                identifiers.get(ident).add(count + ":  " + line);
+                if(!identifiers.get(ident).contains(count + ":  " + line))
+                {
+                    identifiers.get(ident).add(count + ":  " + line);
+                }
             }
         }
 
