@@ -1,3 +1,4 @@
+import java.sql.SQLOutput;
 import java.util.Scanner;
 import java.util.Stack;
 import static java.lang.Character.isDigit;
@@ -29,9 +30,10 @@ public class CA3_Question8 {
             if(isDigit(next))
             {
                 num = num + next;
-                if(i == equation.length()-1 || !isDigit(equation.charAt(i)+1))
+                if(i == equation.length()-1 || !isDigit(equation.charAt(i+1)))
                 {
                     numbers.push(Integer.parseInt(num));
+                    num = "";
                 }
             }
             else if(next == '(')
@@ -48,7 +50,7 @@ public class CA3_Question8 {
             }
             else
             {
-                while(operators.peek() > precedence(next))
+                while(!operators.isEmpty() && operators.peek() > precedence(next))
                 {
                     numbers.push(evaluate(numbers.pop(), numbers.pop(), operators.pop()));
                 }
@@ -58,7 +60,7 @@ public class CA3_Question8 {
 
             if(i == equation.length()-1)
             {
-                while(!operators.isEmpty())
+                while(!operators.isEmpty() && numbers.size() > 1)
                 {
                     numbers.push(evaluate(numbers.pop(), numbers.pop(), operators.pop()));
                 }
@@ -69,7 +71,6 @@ public class CA3_Question8 {
 
     public static int evaluate(int b, int a, char op)
     {
-
         if(op == '+')
         {
             return(a + b);
