@@ -1,9 +1,6 @@
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.Scanner;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 
 /**
  *  Name: Kaylon Riordan
@@ -18,7 +15,7 @@ public class CA3_Question3
         int count = 0;
         String line, ident;
 
-        TreeMap<String, ArrayList<String>> identifiers = new TreeMap<>();
+        TreeMap<String, HashSet<Integer>> identifiers = new TreeMap<>();
 
         while(in.hasNextLine())
         {
@@ -33,27 +30,26 @@ public class CA3_Question3
                 ident = scan.next();
                 if(!identifiers.containsKey(ident))
                 {
-                    identifiers.put(ident, new ArrayList<>());
+                    identifiers.put(ident, new HashSet<>());
                 }
-                if(!identifiers.get(ident).contains(count + ":  " + line))
-                {
-                    identifiers.get(ident).add(count + ":  " + line);
-                }
+                identifiers.get(ident).add(count);
             }
         }
 
         display(identifiers);
     }
 
-    public static void display(TreeMap<String, ArrayList<String>> identifiers)
+    public static void display(TreeMap<String, HashSet<Integer>> identifiers)
     {
-        for (Map.Entry<String, ArrayList<String>> entry: identifiers.entrySet())
+        for (Map.Entry<String, HashSet<Integer>> entry: identifiers.entrySet())
         {
-            System.out.println("\n\nIdentifier '" + entry.getKey() + "' is used in these line(s): ");
-            for(int i = 0; i < entry.getValue().size(); i++)
+            System.out.printf("%s : ", entry.getKey());
+            Iterator iterator = entry.getValue().iterator();
+            while(iterator.hasNext())
             {
-                System.out.println(entry.getValue().get(i));
+                System.out.printf("%d, ", iterator.next());
             }
+            System.out.println("\n");
         }
     }
 
