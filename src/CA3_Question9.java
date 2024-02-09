@@ -1,3 +1,4 @@
+import java.util.Arrays;
 import java.util.Stack;
 
 /**
@@ -92,7 +93,7 @@ public class CA3_Question9
     }
     public static Path solve(Path path, int[][] maze)
     {
-        int[][] mazeCopy = maze;
+        int[][] mazeCopy = Arrays.copyOf(maze, maze.length);
         int x = path.getX();
         int y = path.getY();
         DIRECTION dir = path.getDir();
@@ -160,24 +161,7 @@ public class CA3_Question9
 
         while(x > 0 && x < 7 && y > 0 && y < 7)
         {
-            if(maze[x-1][y] == 1 && dir != DIRECTION.valueOf("EAST"))
-            {
-                paths.push(new Path(x, y, DIRECTION.valueOf("WEST")));
-            }
-            else if(maze[x][y+1] == 1 && dir != DIRECTION.valueOf("NORTH"))
-            {
-                paths.push(new Path(x, y, DIRECTION.valueOf("SOUTH")));
-            }
-            else if(maze[x+1][y] == 1 && dir != DIRECTION.valueOf("WEST"))
-            {
-                paths.push(new Path(x, y, DIRECTION.valueOf("EAST")));
-            }
-            else if(maze[x][y-1] == 1 && dir != DIRECTION.valueOf("SOUTH"))
-            {
-                paths.push(new Path(x, y, DIRECTION.valueOf("NORTH")));
-            }
-
-            while(!paths.isEmpty())
+            do
             {
                 if(maze[x-1][y] == 1 && dir != DIRECTION.valueOf("EAST"))
                 {
