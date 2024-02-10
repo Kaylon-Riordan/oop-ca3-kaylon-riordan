@@ -9,7 +9,7 @@ import java.util.Stack;
 /*
 Direction enum used to indicate direction.
  */
-enum DIRECTION {NORTH, SOUTH,EAST,WEST,NULL};
+enum DIRECTION {NORTH, SOUTH,EAST,WEST};
 
 class Path
 {
@@ -89,164 +89,123 @@ public class CA3_Question9
             }
             System.out.println();
         }
-        System.out.println("\n");
+        System.out.println("");
     }
+
     public static Path solve(Path path, int[][] maze)
     {
-        int[][] mazeCopy = Arrays.copyOf(maze, maze.length);
         int x = path.getX();
         int y = path.getY();
-        DIRECTION dir = path.getDir();
-        int count = 0;
+        DIRECTION dir =  path.getDir();
 
-        while(mazeCopy[x][y] != 0){
-            if(dir == DIRECTION.valueOf("NORTH"))
-            {
-                y--;
-            }
-            else if(dir == DIRECTION.valueOf("EAST"))
-            {
-                x++;
-            }
-            else if(dir == DIRECTION.valueOf("SOUTH"))
-            {
-                y++;
-            }
-            else if(dir == DIRECTION.valueOf("WEST"))
+        // code for copying a 2D array without changing original learned here https://stackoverflow.com/questions/1686425/copy-a-2d-array-in-java
+        int [][] mazeCopy = new int[maze.length][];
+        for(int i = 0; i < maze.length; i++)
+        {
+            mazeCopy[i] = maze[i].clone();
+        }
+        mazeCopy[x][y] = 2;
+
+        while(true)
+        {
+            boolean junction = false;
+            if(dir == DIRECTION.NORTH)
             {
                 x--;
+                if(mazeCopy[x][y+1] != 0 || mazeCopy[x][y-1] != 0)
+                {
+                    junction = true;
+                }
             }
-
-            if(mazeCopy[x][y] == 1)
+            else if(dir == DIRECTION.EAST)
             {
-                mazeCopy[x][y] = 2;
+                y++;
+                if(mazeCopy[x+1][y] != 0 || mazeCopy[x-1][y] != 0)
+                {
+                    junction = true;
+                }
+            }
+            else if(dir == DIRECTION.SOUTH)
+            {
+                x++;
+                if(mazeCopy[x][y+1] != 0 || mazeCopy[x][y-1] != 0)
+                {
+                    junction = true;
+                }
             }
             else
             {
-                break;
+                y--;
+                if(mazeCopy[x+1][y] != 0 || mazeCopy[x-1][y] != 0)
+                {
+                    junction = true;
+                }
             }
 
-            if(mazeCopy[x-1][y] == 1)
+            if(mazeCopy[x][y] == 0)
             {
-                count++;
+                display(mazeCopy);
+                return new Path(x, -1, dir);
             }
-            else if(mazeCopy[x][y+1] == 1)
+
+            mazeCopy[x][y] = 2;
+
+            if(x == 0 || x == 7 || y == 0 || y == 7)
             {
-                count++;
+                display(mazeCopy);
+                return new Path(-1, y, dir);
             }
-            else if(mazeCopy[x+1][y] == 1)
+            else if (junction)
             {
-                count++;
-            }
-            else if(mazeCopy[x][y-1] == 1)
-            {
-                count++;
-            }
-            if(count > 2)
-            {
-                return(new Path(x, y, dir));
+                display(mazeCopy);
+                return new Path(x, y, dir);
             }
         }
-        display(mazeCopy);
-        return(new Path(x, y, DIRECTION.valueOf("NULL")));
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args)
+    {
         int[][] maze = fillMaze();
         int x = 3;
         int y = 4;
-        DIRECTION dir = DIRECTION.valueOf("NULL");
-        Path current;
         Stack<Path> paths = new Stack<>();
 
-        while(x > 0 && x < 7 && y > 0 && y < 7)
-        {
-            do
-            {
-                if(maze[x-1][y] == 1 && dir != DIRECTION.valueOf("EAST"))
-                {
-                    paths.push(new Path(x, y, DIRECTION.valueOf("WEST")));
-                }
-                else if(maze[x][y+1] == 1 && dir != DIRECTION.valueOf("NORTH"))
-                {
-                    paths.push(new Path(x, y, DIRECTION.valueOf("SOUTH")));
-                }
-                else if(maze[x+1][y] == 1 && dir != DIRECTION.valueOf("WEST"))
-                {
-                    paths.push(new Path(x, y, DIRECTION.valueOf("EAST")));
-                }
-                else if(maze[x][y-1] == 1 && dir != DIRECTION.valueOf("SOUTH"))
-                {
-                    paths.push(new Path(x, y, DIRECTION.valueOf("NORTH")));
-                }
+        paths.push(new Path(x, y, DIRECTION.WEST));
+        paths.push(new Path(x, y, DIRECTION.SOUTH));
+        paths.push(new Path(x, y, DIRECTION.EAST));
+        paths.push(new Path(x, y, DIRECTION.NORTH));
 
-                current = solve(paths.pop(), maze);
-                if(current.getDir() != DIRECTION.valueOf("NULL")) {
-                    x = current.getX();
-                    y = current.getY();
-                    dir = current.getDir();
+        System.out.println("Key: 0 = wall, 1 = open space, 2 = current path\n");
+
+        while(!paths.isEmpty())
+        {
+            Path current = solve(paths.pop(), maze);
+
+            if(current.getX() == -1)
+            {
+                System.out.println("Maze Escaped!");
+                break;
+            }
+            else if(current.getY() != -1)
+            {
+                if(current.getDir() != DIRECTION.EAST)
+                {
+                    paths.push(new Path(current.getX(), current.getY(), DIRECTION.WEST));
                 }
-            } while(!paths.isEmpty());
+                if(current.getDir() != DIRECTION.NORTH)
+                {
+                    paths.push(new Path(current.getX(), current.getY(), DIRECTION.SOUTH));
+                }
+                if(current.getDir() != DIRECTION.WEST)
+                {
+                    paths.push(new Path(current.getX(), current.getY(),DIRECTION.EAST));
+                }
+                if(current.getDir() != DIRECTION.SOUTH)
+                {
+                    paths.push(new Path(current.getX(), current.getY(), DIRECTION.NORTH));
+                }
+            }
         }
     }
+
 }
-
-
-//    public static Path solve(Path path, int[][] maze)
-//    {
-//        int x = path.getX();
-//        int y = path.getY();
-//        DIRECTION dir = path.getDir();
-//        int count = 0;
-//
-//        do
-//        {
-//            count = 0;
-//            if(dir == DIRECTION.valueOf("NORTH"))
-//            {
-//                y--;
-//            }
-//            else if(dir == DIRECTION.valueOf("EAST"))
-//            {
-//                x++;
-//            }
-//            else if(dir == DIRECTION.valueOf("SOUTH"))
-//            {
-//                y++;
-//            }
-//            else if(dir == DIRECTION.valueOf("WEST"))
-//            {
-//                x--;
-//            }
-//
-//            if(maze[x][y] == 1)
-//            {
-//                maze[x][y] = 2;
-//            }
-//            else
-//            {
-//                break;
-//            }
-//
-//            if(maze[x-1][y] == 1)
-//            {
-//                count++;
-//            }
-//            else if(maze[x][y+1] == 1)
-//            {
-//                count++;
-//            }
-//            else if(maze[x+1][y] == 1)
-//            {
-//                count++;
-//            }
-//            else if(maze[x][y-1] == 1)
-//            {
-//                count++;
-//            }
-//        } while(count > 1);
-//
-//        display(maze);
-//
-//        return(new Path(x, y, dir));
-//    }
