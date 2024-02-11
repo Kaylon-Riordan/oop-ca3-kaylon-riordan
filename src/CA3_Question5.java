@@ -19,11 +19,14 @@ public class CA3_Question5
 
         System.out.println("Please use commands 'takeoff flightSymbol' to queue a take off, 'land flightSymbol' to queue a landing, 'next' to perform the next queued action, and 'quit' to end simulation");
 
+        // run loop while user hasn't entered the quit command
         while(!command.equalsIgnoreCase("quit"))
         {
+            // take in suers command
             System.out.print("\nCommand: ");
             command = keyboard.next();
 
+            // if takeoff or land then get the next input as the flight symbol and add it to the appropriate stack
             if(command.equalsIgnoreCase("takeoff"))
             {
                 flightSymbol = keyboard.next();
@@ -38,6 +41,7 @@ public class CA3_Question5
             }
             else if(command.equalsIgnoreCase("next"))
             {
+                // if next is inputted, land if a plane is waiting, else take off if a plane is waiting, else display an error message
                 if(!landing.isEmpty())
                 {
                     System.out.println("\n" + landing.peek() + " lands.");
@@ -55,7 +59,7 @@ public class CA3_Question5
             }
             else if(!command.equalsIgnoreCase("quit"))
             {
-                System.out.println(command);
+                // if user gives an invalid input, print an error message
                 System.out.println("\nCommand not Recognised.");
             }
             System.out.println("\nCurrent queues:\nLanding"+landing+"\nTakingOff"+takingOff);

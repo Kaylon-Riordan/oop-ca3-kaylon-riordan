@@ -10,6 +10,7 @@ import java.util.*;
 public class CA3_Question3
 {
     public static void readFile(String fileName) throws FileNotFoundException {
+        // declare variables
         Scanner in = new Scanner(new File(fileName));
 
         int count = 0;
@@ -17,6 +18,7 @@ public class CA3_Question3
 
         TreeMap<String, HashSet<Integer>> identifiers = new TreeMap<>();
 
+        // while the scanner has more lines, increase the count which tracks line number and create a new scanner for the line.
         while(in.hasNextLine())
         {
             count++;
@@ -27,6 +29,7 @@ public class CA3_Question3
 
             while(scan.hasNext())
             {
+                // for each identifier in the line, if the identifier isn't a key in the map, add it, then add the line number to the identifiers set
                 ident = scan.next();
                 if(!identifiers.containsKey(ident))
                 {
@@ -35,7 +38,7 @@ public class CA3_Question3
                 identifiers.get(ident).add(count);
             }
         }
-
+        // after the whiles are finished, display the finished map
         display(identifiers);
     }
 
@@ -43,6 +46,7 @@ public class CA3_Question3
     {
         for (Map.Entry<String, HashSet<Integer>> entry: identifiers.entrySet())
         {
+            // for each identifier in the map display identifier : line numbers
             System.out.printf("%s : ", entry.getKey());
             Iterator iterator = entry.getValue().iterator();
             while(iterator.hasNext())
@@ -54,6 +58,7 @@ public class CA3_Question3
     }
 
     public static void main(String[] args) throws FileNotFoundException {
+        // call the read file class with the name of a java file
         readFile("src/CA3_Question1.java");
     }
 }

@@ -22,17 +22,21 @@ public class CA3_Question4 {
 
         while(in.hasNext())
         {
+            // while the scanner has more tags, store them as a variable
             String tag = in.next();
+            // if the tag taken in is a closing tag that matches the opening tag on top of the stack then pop the stack
             if(!tags.isEmpty() && tag.equals(tags.peek().substring(0,1)+"/"+tags.peek().substring(1)))
             {
                 tags.pop();
             }
+            // else push the tag taken in on top of the stack
             else
             {
                 tags.push(tag);
             }
         }
 
+        // once all tags have been read return valid if the stack is empty, or invalid if it's not
         if(tags.isEmpty())
         {
             return true;
@@ -48,6 +52,7 @@ public class CA3_Question4 {
      */
 
     public static void main(String[] args) throws FileNotFoundException {
+        // call the validate method once for each of the 2 text files
         String[] files = {"tags_valid.txt", "tags_invalid.txt"};
         for(String fName: files) {
             System.out.print(fName +": ");
