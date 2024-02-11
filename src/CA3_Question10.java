@@ -9,7 +9,7 @@ import java.util.*;
 public class CA3_Question10
 {
     public static void main(String[] args) throws FileNotFoundException {
-        TreeMap<String, TreeSet<DistanceTo>> distances = new TreeMap<>();
+        HashMap<String, HashSet<DistanceTo>> distances = new HashMap<>();
 
         Scanner in = new Scanner(new File("Cities.txt"));
         while(in.hasNext())
@@ -20,7 +20,7 @@ public class CA3_Question10
 
             if(!distances.containsKey(from))
             {
-                distances.put(from, new TreeSet<>());
+                distances.put(from, new HashSet<>());
             }
             distances.get(from).add(new DistanceTo(to, dist));
         }
@@ -44,7 +44,7 @@ public class CA3_Question10
             {
                 d = small.getDistance();
                 shortest.put(small.getTarget(), d);
-                for (Map.Entry<String, TreeSet<DistanceTo>> entry: distances.entrySet())
+                for (Map.Entry<String, HashSet<DistanceTo>> entry: distances.entrySet())
                 {
                     if(entry.getKey().equals(small.getTarget()))
                     {
