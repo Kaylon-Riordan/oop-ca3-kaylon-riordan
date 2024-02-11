@@ -15,10 +15,12 @@ public class CA3_Question7
    or
    quit
     */
+
     public static void main(String[] args)
     {
         Scanner in = new Scanner(System.in);
         String command = "";
+        // create a map which uses a company as the key and a queue of blocks as the value
         Map<String, Queue<Block>> stock = new TreeMap<>();
         int owned = 0;
 
@@ -32,6 +34,7 @@ public class CA3_Question7
                 int qty = in.nextInt();
                 double price = in.nextDouble();
 
+                //after buying if map doesn't contain the comp key yet create it, then add data to map
                 if(!stock.containsKey(comp))
                 {
                     stock.put(comp,  new LinkedList<>());
@@ -46,6 +49,7 @@ public class CA3_Question7
                 int qty = in.nextInt();
                 double price = in.nextDouble();
 
+                // verify that the company is in the map, then that enough stock is owned in that company to sell
                 if(stock.containsKey(comp))
                 {
                     owned = 0;

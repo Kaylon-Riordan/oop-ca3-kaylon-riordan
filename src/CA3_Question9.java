@@ -11,6 +11,7 @@ Direction enum used to indicate direction.
  */
 enum DIRECTION {NORTH, SOUTH,EAST,WEST};
 
+// path class stores coordinates x, y, and a direction
 class Path
 {
     private int x, y;
@@ -43,6 +44,7 @@ class Path
 
 public class CA3_Question9
 {
+    // fill and 8x8 2D array with the number 0 at every point
     public static int[][] fillMaze()
     {
         int[][] maze = new int[8][8];
@@ -53,6 +55,7 @@ public class CA3_Question9
                 maze[x][y] = 0;
             }
         }
+        // call the create path method 4 times to add paths off 1s to the maze
         maze = createPath(maze, 1, 1, 6, 'x');
         maze = createPath(maze, 1, 4, 6, 'y');
         maze = createPath(maze, 3, 0, 7, 'x');
@@ -62,6 +65,7 @@ public class CA3_Question9
 
     public static int[][] createPath(int[][] maze, int x, int y, int length, char direction)
     {
+        // replace 0s with 1s starting at pint "x" "y", moving along the axis "direction", going for "length" spaces
         if(direction == 'x')
         {
             for (int z = y; z < y+length; z++)
@@ -106,9 +110,11 @@ public class CA3_Question9
         }
         mazeCopy[x][y] = 2;
 
+        // while loop that only stops after break command
         while(true)
         {
             boolean junction = false;
+            // move one space in the correct directing then check if there is an open space either side to find a junction
             if(dir == DIRECTION.NORTH)
             {
                 x--;
@@ -144,19 +150,23 @@ public class CA3_Question9
 
             if(mazeCopy[x][y] == 0)
             {
+                // send altered path that signifies dead end
                 display(mazeCopy);
                 return new Path(x, -1, dir);
             }
 
+            // update the current position to equal a 2
             mazeCopy[x][y] = 2;
 
             if(x == 0 || x == 7 || y == 0 || y == 7)
             {
+                // send altered path that signifies maze has been exited
                 display(mazeCopy);
                 return new Path(-1, y, dir);
             }
             else if (junction)
             {
+                // send unaltered path if it's a junction point
                 display(mazeCopy);
                 return new Path(x, y, dir);
             }
@@ -165,11 +175,13 @@ public class CA3_Question9
 
     public static void main(String[] args)
     {
+        // call fill maze to make the maze array
         int[][] maze = fillMaze();
         int x = 3;
         int y = 4;
         Stack<Path> paths = new Stack<>();
 
+        //push the 4 directions leading off the starting point onto the stack
         paths.push(new Path(x, y, DIRECTION.WEST));
         paths.push(new Path(x, y, DIRECTION.SOUTH));
         paths.push(new Path(x, y, DIRECTION.EAST));
@@ -179,13 +191,16 @@ public class CA3_Question9
 
         while(!paths.isEmpty())
         {
+            // while the stack isn't empty, solve the top value
             Path current = solve(paths.pop(), maze);
 
+            // if x is -1 signifying maze escaped, end the loop and tell the user
             if(current.getX() == -1)
             {
                 System.out.println("Maze Escaped!");
                 break;
             }
+            // else if it y isn't -1 signifying a dead end, add all connecting paths to the junction except the one you were already coming from
             else if(current.getY() != -1)
             {
                 if(current.getDir() != DIRECTION.EAST)
